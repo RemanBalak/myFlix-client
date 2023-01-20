@@ -1,39 +1,29 @@
 import { useState } from 'react';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
+import { useState, useEffect } from 'react';
 
 export const MainView = () => {
-  const [movies, setMovies] = useState([
-    {
-      id: 1,
-      title: 'Inception',
-      image: 'Inception.png',
-      genre: 'Thriller',
-      author: 'Christopher Nolan',
-      Description:
-        "It starred Leonardo DiCaprio as a corporate spy who steals secrets via a technology that allows him to enter people's dreams.",
-    },
-    {
-      id: 2,
-      title: 'Gladiator',
-      image: 'Gladiator.jpg',
-      genre: 'Sci-fi',
-      author: 'Philip Wylie',
-      Description:
-        'A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.',
-    },
-    {
-      id: 3,
-      title: 'Avatar',
-      image: 'Avatar.png',
-      Genre: 'Action',
-      author: 'James Cameron',
-      description:
-        'A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.',
-    },
-  ]);
+  const [movies, setMovies] = useState([]);
 
   const [selectedMovie, setSelectedMovie] = useState(null);
+
+  useEffect(() => {
+    fetch('http://openlibrary.org/search.json?author=tolkien')
+      .then((response) => response.json())
+      .then((data) => {
+        const booksFromApi = data.docs.map((doc) => {
+          return {
+            id: doc.key,
+            title: doc.title,
+            image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+            author: doc.author_name?.[0],
+          };
+        });
+
+        setBooks(booksFromApi);
+      });
+  }, []);
 
   if (selectedMovie) {
     return (
