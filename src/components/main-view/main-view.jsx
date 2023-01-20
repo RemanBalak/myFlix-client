@@ -21,7 +21,7 @@ export const MainView = () => {
           };
         });
 
-        setBooks(booksFromApi);
+        setMovies(booksFromApi);
       });
   }, []);
 
