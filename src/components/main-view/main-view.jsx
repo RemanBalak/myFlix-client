@@ -8,11 +8,12 @@ export const MainView = () => {
 
   const [selectedMovie, setSelectedMovie] = useState(null);
 
+  // Fetch movie API (HAS NOT BEEN INSERTED YET)
   useEffect(() => {
-    fetch('http://openlibrary.org/search.json?author=tolkien')
+    fetch('#')
       .then((response) => response.json())
       .then((data) => {
-        const booksFromApi = data.docs.map((doc) => {
+        const moviesFromApi = data.docs.map((doc) => {
           return {
             id: doc.key,
             title: doc.title,
@@ -21,7 +22,7 @@ export const MainView = () => {
           };
         });
 
-        setBooks(booksFromApi);
+        setMovies(moviesFromApi);
       });
   }, []);
 
