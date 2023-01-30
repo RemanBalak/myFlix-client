@@ -6,25 +6,39 @@ import { useState, useEffect } from 'react';
 export const MainView = () => {
   const [movies, setMovies] = useState([]);
 
+  const [token, setToken] = useState(null);
+
+  if (!user) {
+    return (
+      <>
+        <LoginView
+          onLoggedIn={(user, token) => {
+            setUser(user);
+            setToken(token);
+          }}
+        />
+        or
+        <SignupView />
+      </>
+    );
+  }
+
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   // Fetch movie API (HAS NOT BEEN INSERTED YET)
   useEffect(() => {
-    fetch('#')
+    if (!token) {
+      return;
+    }
+
+    fetch('https://myflixmoviedb.herokuapp.com/movies', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => response.json())
       .then((data) => {
-        const moviesFromApi = data.docs.map((doc) => {
-          return {
-            id: doc.key,
-            title: doc.title,
-            image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
-            author: doc.author_name?.[0],
-          };
-        });
-
-        setMovies(moviesFromApi);
+        console.log(data);
       });
-  }, []);
+  }, [token]);
 
   if (selectedMovie) {
     return (
@@ -50,6 +64,15 @@ export const MainView = () => {
           }}
         />
       ))}
+      <button
+        onClick={() => {
+          setUser(null);
+          setToken(null);
+          localStorage.clear();
+        }}
+      >
+        Logout
+      </button>
     </div>
   );
 };
