@@ -1,22 +1,29 @@
 import PropTypes from 'prop-types';
+import { Button, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import './movie-card.scss';
 
-// The BookCard function component
-export const MovieCard = ({ movie, onMovieClick }) => {
+export const MovieCard = ({ movie }) => {
   return (
-    <div
-      onClick={() => {
-        onMovieClick(movie);
-      }}
-    >
-      {movie.title}
-    </div>
+    <Card className="h-100">
+      <Card.Img variant="top" src={movie.image} />
+      <Card.Body>
+        <Card.Title className="title">{movie.title}</Card.Title>
+        <Link
+          className="open-button"
+          to={`/movies/${encodeURIComponent(movie.id)}`}
+        >
+          <Button variant="link">Open</Button>
+        </Link>
+      </Card.Body>
+    </Card>
   );
 };
 
-// Here is where we define all the props constraints for the MovieCard
 MovieCard.propTypes = {
   movie: PropTypes.shape({
     title: PropTypes.string,
+    image: PropTypes.string,
+    // director: PropTypes.string
   }).isRequired,
-  onMovieClick: PropTypes.func.isRequired,
 };
