@@ -8,17 +8,17 @@ export const MainView = () => {
 
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  // Fetch movie API (HAS NOT BEEN INSERTED YET)
+  // Fetch movie API
   useEffect(() => {
-    fetch('#')
+    fetch('https://reman-backend.onrender.com/movies')
       .then((response) => response.json())
       .then((data) => {
-        const moviesFromApi = data.docs.map((doc) => {
+        const moviesFromApi = data.map((doc) => {
           return {
-            id: doc.key,
+            id: doc.id,
             title: doc.title,
-            image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
-            author: doc.author_name?.[0],
+            image: doc.image,
+            author: doc.author,
           };
         });
 
